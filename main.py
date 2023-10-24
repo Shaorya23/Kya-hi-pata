@@ -69,6 +69,10 @@ async def Help(ctx):
 
 @client.event
 async def on_ready():
+    await client.change_presence(activity=discord.Streaming(
+                 name='ID HOSTED HAI KID | .gg/sp1it',
+                 url='https://discord.gg/sp1it'))
+    print(f"{Fore.GREEN} [>] SELFBOT STARTED | STREAM CREATED")
     print(f"""{Fore.RED}
 
 ░██████╗████████╗███████╗██╗░░░██╗███████╗
