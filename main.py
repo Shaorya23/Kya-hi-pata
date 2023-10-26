@@ -45,7 +45,8 @@ client = commands.Bot(description='THIS SELFBOT IS CREATED BY STEVE PAPA', comma
 header = {"Authorization": f'Bot {"Token"}'}
 
 stream_url = "https://replit.com/@WannaBeGhost"
-Token = "ACCOUNT TOKEN"
+Token = input("{}({}SELFBOT{}) INPUT ACCOUNT TOKEN{}:{} ".format(Fore.RESET, "\x1b[38;5;21m", Fore.RESET, "\x1b[38;5;21m", Fore.RESET))
+reason = input("{}({}SELFBOT{}) INPUT BAN REASON{}:{} ".format(Fore.RESET, "\x1b[38;5;21m", Fore.RESET, "\x1b[38;5;21m", Fore.RESET))
 
 #NUKE HELP COMMAND
 @client.command()
@@ -389,7 +390,7 @@ async def pings(ctx):
 
 #BAN
 @client.command()
-async def ban(ctx, member: discord.Member, *, reason=None):
+async def ban(ctx, member: discord.Member, *, reason=reason):
     await member.ban(reason=reason)
     await ctx.send('```SUCCESSFULLY BANNED```')
     print(f"{Fore.GREEN}[>] SUCCESSFULLY BANNED")
@@ -397,7 +398,7 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 
 #KICK
 @client.command()
-async def kick(ctx, member: discord.Member, *, reason=None):
+async def kick(ctx, member: discord.Member, *, reason=reason):
     await member.kick(reason=reason)
     await ctx.send('```SUCCESSFULLY KICKED```')
     print(f"{Fore.GREEN}[>] SUCCESSFULLY KICKED")
@@ -504,7 +505,7 @@ async def massroles(ctx, amount=50):
     roles = ctx.guild.roles
     for roles in roles:
         try:
-            print(roles.name + " is edited by STEVE PAPA")
+            print(roles.name + "ROLE CREATED")
         except:
             pass
             print("error")
@@ -660,132 +661,11 @@ async def masskick2(ctx):
                 threading.Thread(target=mass_kick, args=(member.id, )).start()
         print(f"Executed member {member}.")
         clear()
-        print(f"{Fore.GREEN}[>] MASS KICK SUCCESSFUL")
+        print(f"Fore.GREEN}[>] MASS KICK SUCCESSFUL")
     except Exception as error:
         print(f"{Fore.GREEN}[>] ERROR KICKING ")
         sleep(10)
         await asyncio.sleep(2)
-
-
-#VC JOINER
-@client.command()
-async def joinvc(ctx, channel_id: int):
-    channel = client.get_channel(channel_id)
-
-    if channel and isinstance(channel, discord.VoiceChannel):
-        voice_client = await channel.connect()
-        await ctx.send(f"JOINED {channel.name}")
-    else:
-        await ctx.send("Invalid channel ID or the channel is not a voice channel. Please provide valid channel ID")
-
-
-#TOKEN CHECKER
-@client.command(aliases=['tdox', 'doxtoken'])
-async def tokeninfo(ctx, _token):
-    
-    headers = {'Authorization': _token, 'Content-Type': 'application/json'}
-    try:
-        res = requests.get(
-            'https://canary.discordapp.com/api/v6/users/@me', headers=headers)
-        res = res.json()
-        user_id = res['id']
-        locale = res['locale']
-        avatar_id = res['avatar']
-        creation_date = datetime.datetime.utcfromtimestamp(
-            ((int(user_id) >> 22) + 1420070400000) /
-            1000).strftime('%d-%m-%Y %H:%M:%S UTC')
-    except KeyError:
-        headers = {
-            'Authorization': "Bot" + token,
-            'Content-Type': 'application/json'
-        }
-        try:
-            res = requests.get(
-                'https://canary.discordapp.com/api/v6/users/@me',
-                headers=headers)
-            res = res.json()
-            user_id = res['id']
-            locale = res['locale']
-            avatar_id = res['avatar']
-            creation_date = datetime.datetime.utcfromtimestamp(
-                ((int(user_id) >> 22) + 1420070400000) /
-                1000).strftime('%d-%m-%Y %H:%M:%S UTC')
-            em = discord.Embed(
-                description=
-                f"Name: `{res['username']}#{res['discriminator']} ` **BOT**\nID: `{res['id']}`\nEmail: `{res['email']}`\nCreation Date: `{creation_date}`"
-            )
-            fields = [
-                {
-                    'name': 'Flags',
-                    'value': res['flags']
-                },
-                {
-                    'name': 'Local language',
-                    'value': res['locale'] + f"errror sex"
-                },
-                {
-                    'name': 'Verified',
-                    'value': res['verified']
-                },
-            ]
-            for field in fields:
-                if field['value']:
-                    em.add_field(
-                        name=field['name'], value=field['value'], inline=False)
-                    em.set_thumbnail(
-                        url=
-                        f"https://cdn.discordapp.com/avatars/{user_id}/{avatar_id}"
-                    )
-            return await ctx.reply(embed=em, mention_author=True)
-        except KeyError:
-            await ctx.reply("SELFBOT HAI BACCHE | Invalid Token", mention_author=True)
-    em = discord.Embed(
-        description=
-        f"Name: `{res['username']}#{res['discriminator']}`\nID: `{res['id']}`\nEmail: `{res['email']}`\nCreation Date: `{creation_date}`"
-    )
-    em.set_footer(text="STEVE PAPA")
-    nitro_type = "None"
-    if "premium_type" in res:
-        if res['premium_type'] == 2:
-            nitro_type = "Nitro Premium"
-        elif res['premium_type'] == 1:
-            nitro_type = "Nitro Classic"
-    fields = [
-        {
-            'name': 'Phone',
-            'value': res['phone']
-        },
-        {
-            'name': 'Flags',
-            'value': res['flags']
-        },
-        {
-            'name': 'Local language',
-            'value': res['locale']
-        },
-        {
-            'name': 'MFA',
-            'value': res['mfa_enabled']
-        },
-        {
-            'name': 'Verified',
-            'value': res['verified']
-        },
-        {
-            'name': 'Nitro',
-            'value': nitro_type
-        },
-    ]
-    for field in fields:
-        if field['value']:
-            em.add_field(
-                name=field['name'], value=field['value'], inline=False)
-            em.set_thumbnail(
-                url=f"https://cdn.discordapp.com/avatars/{user_id}/{avatar_id}"
-            )
-            em.set_footer(text="STEVE PAPA SELFBOT")
-    return await ctx.reply(embed=em, mention_author=True)
-    print(f"{Fore.GREEN}[>] TOKEN DETAILS SENT SUCCESSFUL")
 
 
 #1 DAY PRUNE BY STEVE
@@ -794,7 +674,7 @@ async def prune(ctx):
   await ctx.message.delete()
   guild = ctx.guild
   try:
-            await guild.prune_members(days=1, compute_prune_count=False, roles=guild.roles)
+            await guild.prune_members(days=1, compute_prune_count=False, roles=guild.roles, reason=reason)
 
   except:
             print(f"{Fore:RED}[! ERROR PRUNING ]")
