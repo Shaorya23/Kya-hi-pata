@@ -137,15 +137,15 @@ SERVER_LINK = config.get("SERVER_LINK")
 
 
 #WATCHING
-@client.command()
+@client.command(aliases=["watching"])
 async def watch(ctx, *, message):
-    await ctx.message.channel(f"**STREAMING {message}**")
+    await ctx.message.channel(f"**WATCHING {message}**")
     await client.change_presence(activity=discord.Activity(
         type=(discord.ActivityType.watching), name=message))
 
 
 #PLAYING
-@client.command()
+@client.command(aliases=["playing"])
 async def play(ctx, *, message):
     await ctx.message.channel(f"**PLAYING {message}**")
     game = discord.Game(name=message)
@@ -153,7 +153,7 @@ async def play(ctx, *, message):
 
 
 #LISTENING
-@client.command()
+@client.command(aliases=["listening"])
 async def listen(ctx, *, message):
     await ctx.message.channel(f"**LISTENING TO {message}**")
     await client.change_presence(activity=discord.Activity(
@@ -161,17 +161,17 @@ async def listen(ctx, *, message):
 
 
 #STREAMING
-@client.command()
+@client.command(aliases=["streaming"])
 async def stream(ctx, *, message):
     await ctx.message.delete()
     stream = discord.Streaming(name=message,
-                               url='https://www.twitch.tv/SparkYSelfbot')
+                               url='https://discord.gg/sp1it')
     await client.change_presence(activity=stream)
 
 
 #BOOST
-@client.command()
-async def boost(channel, guild):
+@client.command(aliases=["srvboost"])
+async def boost(ctx):
     await channel.send(
         f"**╭・⌬・** __**{guild.name}**__\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**\n**[>]・Server has :** `{guild.premium_subscription_count} BOOSTS`\n**[>]・Request creator : **`{client.user.name}`\n**[>]・__STEVE PAPA SELFBOT__**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**"
     )
@@ -179,14 +179,15 @@ async def boost(channel, guild):
 
 #SELFBOT INFO
 @client.command()
-async def selfbot(channel):
+async def selfbot(ctx):
     await channel.send(
         f"**╭・⌬・STEVE PAPA SELFBOT**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**\n**[>]・Version : SELFBOT V3**\n**[+]・ Language : Python**\n**[>]・ Hosted at : Termux**\n**[>]・Request creator : {client.user.name}**\n\n**NOTE :** `THIS SELFBOT IS STILL UNDER DEVELOPMENT, I DON'T HAVE MUCH TIME RN BUT I WILL SURELY ADD MORE CMDS SOON`\n\n**[>]・__This SelfBot Is Created by - STEVE PAPA__ **\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**"
     )
 
 
 #VOUCH
-async def vouch(channel):
+@client.command()
+async def vouch(ctx):
     await channel.send(
         f"**╭・⌬・STEVE PAPA SELFBOT**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**\n**[>]・ `SERVER LINK` : `https://discord.gg/sp1it`**\n**[+]・ `VOUCH FORMAT` \n`+vouch (user) Legit Got (product) For (price) Thank You`**\n\n**[+]・Request creator : {client.user.name}**\n\n**[+]・__This SelfBot Is Created by - STEVE PAPA__ **\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**"
     )
@@ -194,9 +195,9 @@ async def vouch(channel):
 
 
 #LINK
-@client.command()
+@client.command(aliases=["sl"])
 async def link(channel):
-    await channel.send("- `https://discord.gg/sp1it`")
+    await channel.send("`https://discord.gg/sp1it`")
 
 
 #NITRO GEN
