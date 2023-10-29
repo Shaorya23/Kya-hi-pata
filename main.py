@@ -44,7 +44,6 @@ intents.members = True
 client = commands.Bot(description='THIS SELFBOT IS CREATED BY STEVE PAPA', command_prefix='>', self_bot=True, intents=intents)
 header = {"Authorization": f'Bot {"Token"}'}
 
-stream_url = "https://replit.com/@WannaBeGhost"
 Token = input("{}({}SELFBOT{}) INPUT ACCOUNT TOKEN{}:{} ".format(Fore.RESET, "\x1b[38;5;21m", Fore.RESET, "\x1b[38;5;21m", Fore.RESET))
 reason = input("{}({}SELFBOT{}) INPUT BAN REASON{}:{} ".format(Fore.RESET, "\x1b[38;5;21m", Fore.RESET, "\x1b[38;5;21m", Fore.RESET))
 
