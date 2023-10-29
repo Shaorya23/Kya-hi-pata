@@ -51,7 +51,7 @@ reason = input("{}({}SELFBOT{}) INPUT BAN REASON{}:{} ".format(Fore.RESET, "\x1b
 #NUKE HELP COMMAND
 @client.command()
 async def nukehelp(ctx):
-    nukehelp = (f"**╭・⌬・__STEVE PAPA SELFBOT__**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**\n\n**[ __NUKE COMMANDS__... ]**\n\n**[>]・ `RS` **\n**[>]・ `WSPAM` **\n**[>]・`PINGS` **\n**[>]・ `BAN` **\n**[>]・ `KICK` **\n**[>]・ `ADMINALL` **\n**[>]・ `ADMINSERVERS` **\n**[>]・ `DC` **\n**[>]・ `NICKALL` **\n**[>]・ `MASSUNBAN`  **\n**[>]・ `MR` **\n**[>]・ `MC` **\n**[>]・ `BAN²` **\n**[>]・ `MASSROLES²` **\n**[>]・ `MASSBAN` **\n**[>]・ `MASSKICK` **\n**[>]・ `KICK²`  **\n**[>]・ `PRUNE` **\n**[>]・ `SWIZZ`  **\n**[>]・ `PWIZZ` **\n**[>]・ `TOKENINFO`  **\n\n**・` TYPE [HELP] FOR NORMAL COMMANDS...` **\n\n**[>]・__Request creator__ : `{client.user.name}`**\n**[>]・__This SelfBot Is Created By__ - __STEVE PAPA__**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**"
+    nukehelp = (f"**╭・⌬・__STEVE PAPA SELFBOT__**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**\n\n**[ __NUKE COMMANDS__... ]**\n\n**[>]・ `RS`  [ RENAME SERVER ] [ >RS {SERVERNAME} ] **\n**[>]・`PINGS`  [ WEBHOOK PINGS ] **\n**[>]・ `BAN` [ >BAN {USERMENTION} ] **\n**[>]・ `KICK` [ >KICK {USERMENTION} ] **\n**[>]・ `ADMINALL` **\n**[>]・ `ADMINSERVERS` [ >ADMINSERVERS {USERTOKEN} ] **\n**[>]・ `DC` [ DELETE CHANNELS ] **\n**[>]・ `NICKALL` [ >NICKALL {NAME} ] **\n**[>]・ `MASSUNBAN`  **\n**[>]・ `MR` [ MASS ROLES ] **\n**[>]・ `MC` [ MASS CHANNELS ] **\n**[>]・ `MASSBAN` **\n**[>]・ `MASSKICK` **\n**[>]・ `PRUNE` **\n**[>]・ `NUKE` [ NUKE ALL NUKE CMDS MIXED ] **\n\n**・` TYPE [HELP] FOR NORMAL COMMANDS...` **\n\n**[>]・__Request creator__ : `{client.user.name}`**\n**[>]・__This SelfBot Is Created By__ - __STEVE PAPA__**\n**●▬▬▬▬▬▬▬▬๑۩✰۩๑▬▬▬▬▬▬▬▬●**"
     )
     await ctx.send(nukehelp)
     print(f"{Fore.GREEN}[>] NUKE HELP SENT SUCCESSFULLY ")
@@ -230,51 +230,6 @@ async def wife(ctx):
     except Exception as e:
         print('- `[>] ERROR WHILE FETCHING IT`', e)
     await asyncio.sleep(2)
-
-
-#PROMO CHECK
-@client.command()
-async def checkpromo(ctx, *, promo_links):
-    links = promo_links.split('\n')
-
-    async with aiohttp.ClientSession() as session:
-        for link in links:
-            promo_code = extract_promo_code(link)
-            if promo_code:
-                result = await check_promo(session, promo_code)
-                await ctx.send(result)
-            else:
-                await ctx.send(f'- `INAVLID PROMO{link}`')
-
-async def check_promo(session, promo_code):
-    url = f'https://ptb.discord.com/api/v10/entitlements/gift-codes/{promo_code}'
-
-    async with session.get(url) as response:
-        if response.status in [200, 204, 201]:
-            data = await response.json()
-            if data["uses"] == data["max_uses"]:
-                return f'- `ALREADY CLAIMED {promo_code}`'
-            else:
-                try:
-                    now = datetime.datetime.utcnow()
-                    exp_at = data["expires_at"].split(".")[0]
-                    parsed = parser.parse(exp_at)
-                    days = abs((now - parsed).days)
-                    title = data["promotion"]["inbound_header_text"]
-                except Exception as e:
-                    print(e)
-                    exp_at = "- `FAILED TO FETCH`"
-                    days = ""
-                    title = "- `FAILED TO FETCH`"
-                return f'- `VALID {promo_code} | DAYS LEFT IN EXPIRATION {days} | EXPIRES AT {exp_at} | TITLE :{title}`'
-        elif response.status == 429:
-            return f'- `RATE LIMITED{response.headers["RETRY AFTER"]} SECONDS`'
-        else:
-            return f'- `INVALID : {promo_code}`'
-
-def extract_promo_code(promo_link):
-    promo_code = promo_link.split('/')[-1]
-    return promo_code
 
 
 #DM ALL
@@ -543,35 +498,6 @@ async def masschannels(ctx, amount=50):
     await asyncio.sleep(2) 
 
 
-#MASS BAN v²
-@client.command(aliases=['ban2'])
-async def massban2(ctx):
-    try:
-        await ctx.message.delete()
-        await asyncio.sleep(2) 
-        guild = ctx.guild.id
-    except:
-        print(f"Connection error.")
-
-    def mass_ban(i):
-        r = sessions.put(f"https://discord.com/api/v9/guilds/{guild}/bans/{i}",
-                         headers=headers,
-                         proxies={
-                             "http": 'http://' + next(rotating)
-                         }).result()
-
-    try:
-        for i in range(3):
-            for member in list(ctx.guild.members):
-                threading.Thread(target=mass_ban, args=(member.id, )).start()
-                logging.info(f"Executed member {member}.")
-        clear()
-        print(f"MASS BAN SUCCESSFUL.")
-    except Exception as error:
-        print(f"Connection error.")
-        await asyncio.sleep(2)
-
-
 #MASS SPAM
 @client.command()
 async def spam(ctx, amount: int, delay_ms: float, *, message):
@@ -583,30 +509,6 @@ async def spam(ctx, amount: int, delay_ms: float, *, message):
         await asyncio.sleep(delay_sec)
         print(f"{Fore.GREEN}[>] SPAM SUCCESSFUL ")
     await asyncio.sleep(2)
-
-
-#MASS ROLES v²
-@client.command()
-async def massroles2(ctx):
-    try:
-        await ctx.message.delete()
-        await asyncio.sleep(2)
-        guild = ctx.guild.id
-    except:
-        logging.info(f"Connection error.")
-    def massroles2(i):
-        json = {
-          "name": i
-        }
-        r = sessions.post(f"https://discord.com/api/v9/guilds/{guild}/roles", headers=headers, json=json)
-    for i in range(50):
-        threading.Thread(
-          target=massroles2,
-          args=(random.choice(ROLE_NAMES), )
-          ).start()
-        print(f"Created channel {random.choice(ROLE_NAMES)}.")
-
-    await asyncio.sleep(15)
 
 
 #MASS BAN
@@ -638,35 +540,6 @@ async def masskick(ctx):
     await asyncio.sleep(2)
     print(f"{Fore.GREEN}[>] MASS KICK SUCCESSFUL ")
 
-#MASSKICK v²
-@client.command(aliases=['kick2'])
-async def masskick2(ctx):
-    try:
-        await ctx.message.delete()
-        await asyncio.sleep(2)
-        guild = ctx.guild.id
-    except:
-        print(f"Connection error.")
-
-    def mass_kick(i):
-        r = sessions.put(f"https://discord.com/api/v9/guilds/{guild}/kick/{i}",
-                         headers=headers,
-                         proxies={
-                             "http": 'http://' + next(rotating)
-                         }).result()
-
-    try:
-        for i in range(3):
-            for member in list(ctx.guild.members):
-                threading.Thread(target=mass_kick, args=(member.id, )).start()
-        print(f"Executed member {member}.")
-        clear()
-        print(f"Fore.GREEN}[>] MASS KICK SUCCESSFUL")
-    except Exception as error:
-        print(f"{Fore.GREEN}[>] ERROR KICKING ")
-        sleep(10)
-        await asyncio.sleep(2)
-
 
 #1 DAY PRUNE BY STEVE
 @client.command()
@@ -690,6 +563,8 @@ async def nuke(ctx):
   await ctx.channel.send(f">mc")
   await asyncio.sleep(2)
   await ctx.channel.send(f"mr")
+  await asyncio.sleep(2)
+  await ctx.channel.send(f"pings")
   await asyncio.sleep(2)
   print(f"{Fore.GREEN}[>] ALL CMDS SENT SUCCESSFUL")
 
